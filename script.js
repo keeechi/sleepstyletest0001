@@ -445,7 +445,13 @@ function createTable(data) {
   function createSelect(options) {
     const select = document.createElement('select');
     select.className = 'form-select form-select-sm';
-    select.innerHTML = options.map(o => `<option value="${o}">${o}</option>`).join('');
+    // 「全て」を選択肢として表示する場合は value を空文字に設定
+    select.innerHTML = options.map(o => {
+      const val = (o === '全て') ? '' : o;
+      return `<option value="${val}">${o}</option>`;
+    }).join('');
+    return select;
+  }">${o}</option>`).join('');
     return select;
   }
   function populateOptions(select, values) {
