@@ -1,55 +1,77 @@
 <!DOCTYPE html>
 <html lang="ja">
-
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ポケモンスリープ寝顔チェッカー</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
   <div class="container py-4">
     <h1 class="mb-4">ポケモンスリープ寝顔チェッカー</h1>
     <p>フィールドごとに寝顔の取得状況を確認・管理できます。</p>
 
-    <!-- タブナビゲーション -->
-    <ul class="nav nav-tabs" id="tabMenu" role="tablist">
-      <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-all" type="button" role="tab">すべての寝顔一覧</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-wakakusa" type="button" role="tab">ワカクサ本島</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-cyan" type="button" role="tab">シアンの砂浜</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-taupe" type="button" role="tab">トープ洞窟</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-unohana" type="button" role="tab">ウノハナ雪原</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-lapis" type="button" role="tab">ラピスラズリ湖畔</button></li>
-      <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-gold" type="button" role="tab">ゴールド旧発電所</button></li>
+    <!-- メインタブ -->
+    <ul class="nav nav-tabs" id="mainTabMenu" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="tab-allList-btn" data-bs-toggle="tab" data-bs-target="#tab-allList" type="button" role="tab">全寝顔チェックリスト</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tab-fields-btn"  data-bs-toggle="tab" data-bs-target="#tab-fields" type="button" role="tab">フィールドごとの寝顔一覧</button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tab-backup-btn"  data-bs-toggle="tab" data-bs-target="#tab-backup" type="button" role="tab">データのバックアップと復旧</button>
+      </li>
     </ul>
 
-    <!-- タブの内容 -->
-    <div class="tab-content pt-3" id="tabContent">
-      <div class="tab-pane fade show active" id="tab-all" role="tabpanel"></div>
-      <div class="tab-pane fade" id="tab-wakakusa" role="tabpanel"></div>
-      <div class="tab-pane fade" id="tab-cyan" role="tabpanel"></div>
-      <div class="tab-pane fade" id="tab-taupe" role="tabpanel"></div>
-      <div class="tab-pane fade" id="tab-unohana" role="tabpanel"></div>
-      <div class="tab-pane fade" id="tab-lapis" role="tabpanel"></div>
-      <div class="tab-pane fade" id="tab-gold" role="tabpanel"></div>
-    </div>
+    <div class="tab-content pt-3" id="mainTabContent">
+      <!-- 全寝顔チェックリスト -->
+      <div class="tab-pane fade show active" id="tab-allList" role="tabpanel">
+        <table id="allChecklist" class="table table-bordered table-sm">
+          <thead>
+            <tr>
+              <th>No.</th><th>ポケモン名</th><th>☆1</th><th>☆2</th><th>☆3</th><th>☆4</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
 
-    <div class="mt-4">
-      <button id="exportBtn" class="btn btn-outline-primary">バックアップデータをエクスポート</button>
-      <input type="file" id="importFile" class="form-control mt-2" accept="application/json">
+      <!-- フィールドごとの寝顔一覧 -->
+      <div class="tab-pane fade" id="tab-fields" role="tabpanel">
+        <ul class="nav nav-tabs mb-3" id="fieldSubTabs" role="tablist">
+          ${["ワカクサ本島","シアンの砂浜","トープ洞窟","ウノハナ雪原","ラピスラズリ湖畔","ゴールド旧発電所"]
+            .map((f,i)=>`
+          <li class="nav-item" role="presentation">
+            <button class="nav-link ${i===0?"active":""}" id="field-${i}-btn" data-bs-toggle="tab" data-bs-target="#field-${i}" type="button" role="tab">${f}</button>
+          </li>`).join("")}
+        </ul>
+        <div class="tab-content" id="fieldSubTabsContent">
+          ${["ワカクサ本島","シアンの砂浜","トープ洞窟","ウノハナ雪原","ラピスラズリ湖畔","ゴールド旧発電所"]
+            .map((f,i)=>`
+          <div class="tab-pane fade ${i===0?"show active":""}" id="field-${i}" role="tabpanel">
+            <table class="table table-bordered table-sm">
+              <thead>
+                <tr><th>No.</th><th>ポケモン名</th><th>☆1</th><th>☆2</th><th>☆3</th><th>☆4</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>`).join("")}
+        </div>
+      </div>
+
+      <!-- データのバックアップと復旧 -->
+      <div class="tab-pane fade" id="tab-backup" role="tabpanel">
+        <div class="mt-4">
+          <button id="exportBtn" class="btn btn-outline-primary">バックアップデータをエクスポート</button>
+          <input type="file" id="importFile" class="form-control mt-2" accept="application/json">
+        </div>
+      </div>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
-
 </html>
