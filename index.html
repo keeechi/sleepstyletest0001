@@ -1,77 +1,142 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ポケモンスリープ寝顔チェッカー</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css"
+  />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container py-4">
+  <div class="container mt-4">
     <h1 class="mb-4">ポケモンスリープ寝顔チェッカー</h1>
-    <p>フィールドごとに寝顔の取得状況を確認・管理できます。</p>
+
+    <!-- SummaryTable（仮置き 5×7） -->
+    <h2>取得状況サマリー</h2>
+    <table id="summary-table" class="table table-bordered mb-5">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Field1</th>
+          <th>Field2</th>
+          <th>Field3</th>
+          <th>Field4</th>
+          <th>Field5</th>
+          <th>Field6</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- 5行分のダミー -->
+        <tr><td>Row1</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Row2</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Row3</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Row4</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td>Row5</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
 
     <!-- メインタブ -->
-    <ul class="nav nav-tabs" id="mainTabMenu" role="tablist">
-      <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="tab-allList-btn" data-bs-toggle="tab" data-bs-target="#tab-allList" type="button" role="tab">全寝顔チェックリスト</button>
+    <ul class="nav nav-tabs" id="mainTab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="all-tab"
+          data-toggle="tab"
+          href="#all"
+          role="tab"
+          >全寝顔チェックリスト</a
+        >
       </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-fields-btn"  data-bs-toggle="tab" data-bs-target="#tab-fields" type="button" role="tab">フィールドごとの寝顔一覧</button>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="fields-tab"
+          data-toggle="tab"
+          href="#fields"
+          role="tab"
+          >フィールド別寝顔一覧</a
+        >
       </li>
-      <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-backup-btn"  data-bs-toggle="tab" data-bs-target="#tab-backup" type="button" role="tab">データのバックアップと復旧</button>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="backup-tab"
+          data-toggle="tab"
+          href="#backup"
+          role="tab"
+          >バックアップ・復旧</a
+        >
       </li>
     </ul>
-
-    <div class="tab-content pt-3" id="mainTabContent">
+    <div class="tab-content pt-3">
       <!-- 全寝顔チェックリスト -->
-      <div class="tab-pane fade show active" id="tab-allList" role="tabpanel">
-        <table id="allChecklist" class="table table-bordered table-sm">
+      <div
+        class="tab-pane fade show active"
+        id="all"
+        role="tabpanel"
+        aria-labelledby="all-tab"
+      >
+        <table id="all-table" class="table table-striped table-bordered">
           <thead>
             <tr>
-              <th>No.</th><th>ポケモン名</th><th>☆1</th><th>☆2</th><th>☆3</th><th>☆4</th>
+              <th>図鑑No</th>
+              <th>ポケモン名</th>
+              <th>☆1</th>
+              <th>☆2</th>
+              <th>☆3</th>
+              <th>☆4</th>
             </tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
 
-      <!-- フィールドごとの寝顔一覧 -->
-      <div class="tab-pane fade" id="tab-fields" role="tabpanel">
-        <ul class="nav nav-tabs mb-3" id="fieldSubTabs" role="tablist">
-          ${["ワカクサ本島","シアンの砂浜","トープ洞窟","ウノハナ雪原","ラピスラズリ湖畔","ゴールド旧発電所"]
-            .map((f,i)=>`
-          <li class="nav-item" role="presentation">
-            <button class="nav-link ${i===0?"active":""}" id="field-${i}-btn" data-bs-toggle="tab" data-bs-target="#field-${i}" type="button" role="tab">${f}</button>
-          </li>`).join("")}
+      <!-- フィールド別寝顔一覧 -->
+      <div
+        class="tab-pane fade"
+        id="fields"
+        role="tabpanel"
+        aria-labelledby="fields-tab"
+      >
+        <ul class="nav nav-pills mb-3" id="fieldTab" role="tablist">
+          <li class="nav-item"><a class="nav-link active" id="wakakusa-tab" data-toggle="pill" href="#wakakusa" role="tab">ワカクサ本島</a></li>
+          <li class="nav-item"><a class="nav-link" id="cyan-tab" data-toggle="pill" href="#cyan" role="tab">シアンの砂浜</a></li>
+          <li class="nav-item"><a class="nav-link" id="tope-tab" data-toggle="pill" href="#tope" role="tab">トープ洞窟</a></li>
+          <li class="nav-item"><a class="nav-link" id="unohana-tab" data-toggle="pill" href="#unohana" role="tab">ウノハナ雪原</a></li>
+          <li class="nav-item"><a class="nav-link" id="lazuli-tab" data-toggle="pill" href="#lazuli" role="tab">ラピスラズリ湖畔</a></li>
+          <li class="nav-item"><a class="nav-link" id="gold-tab" data-toggle="pill" href="#gold" role="tab">ゴールド旧発電所</a></li>
         </ul>
-        <div class="tab-content" id="fieldSubTabsContent">
-          ${["ワカクサ本島","シアンの砂浜","トープ洞窟","ウノハナ雪原","ラピスラズリ湖畔","ゴールド旧発電所"]
-            .map((f,i)=>`
-          <div class="tab-pane fade ${i===0?"show active":""}" id="field-${i}" role="tabpanel">
-            <table class="table table-bordered table-sm">
-              <thead>
-                <tr><th>No.</th><th>ポケモン名</th><th>☆1</th><th>☆2</th><th>☆3</th><th>☆4</th></tr>
-              </thead>
+        <div class="tab-content" id="fieldTabContent">
+          <!-- 各サブタブ内にテーブル -->
+          <div class="tab-pane fade show active" id="wakakusa" role="tabpanel">
+            <table class="table table-bordered" id="table-wakakusa">
+              <thead><tr><th>取得</th><th>図鑑No</th><th>名前</th><th>レア度</th><th>睡眠タイプ</th><th>ランク</th></tr></thead>
               <tbody></tbody>
             </table>
-          </div>`).join("")}
+          </div>
+          <!-- 他の5つは同様に -->
+          <div class="tab-pane fade" id="cyan" role="tabpanel"><table class="table table-bordered" id="table-cyan"><thead><tr><th>取得</th><th>図鑑No</th><th>名前</th><th>レア度</th><th>睡眠タイプ</th><th>ランク</th></tr></thead><tbody></tbody></table></div>
+          <div class="tab-pane fade" id="tope" role="tabpanel"><table class="table table-bordered" id="table-tope"><thead><tr><th>取得</th><th>図鑑No</th><th>名前</th><th>レア度</th><th>睡眠タイプ</th><th>ランク</th></tr></thead><tbody></tbody></table></div>
+          <div class="tab-pane fade" id="unohana" role="tabpanel"><table class="table table-bordered" id="table-unohana"><thead><tr><th>取得</th><th>図鑑No</th><th>名前</th><th>レア度</th><th>睡眠タイプ</th><th>ランク</th></tr></thead><tbody></tbody></table></div>
+          <div class="tab-pane fade" id="lazuli" role="tabpanel"><table class="table table-bordered" id="table-lazuli"><thead><tr><th>取得</th><th>図鑑No</th><th>名前</th><th>レア度</th><th>睡眠タイプ</th><th>ランク</th></tr></thead><tbody></tbody></table></div>
+          <div class="tab-pane fade" id="gold" role="tabpanel"><table class="table table-bordered" id="table-gold"><thead><tr><th>取得</th><th>図鑑No</th><th>名前</th><th>レア度</th><th>睡眠タイプ</th><th>ランク</th></tr></thead><tbody></tbody></table></div>
         </div>
       </div>
 
-      <!-- データのバックアップと復旧 -->
-      <div class="tab-pane fade" id="tab-backup" role="tabpanel">
-        <div class="mt-4">
-          <button id="exportBtn" class="btn btn-outline-primary">バックアップデータをエクスポート</button>
-          <input type="file" id="importFile" class="form-control mt-2" accept="application/json">
-        </div>
+      <!-- バックアップ・復旧 -->
+      <div class="tab-pane fade" id="backup" role="tabpanel" aria-labelledby="backup-tab">
+        <button id="export-btn" class="btn btn-primary mr-2">エクスポート</button>
+        <button id="import-btn" class="btn btn-secondary">インポート</button>
+        <textarea id="backup-text" class="form-control mt-3" rows="8" placeholder="ここにJSONを貼り付けてインポート"></textarea>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
